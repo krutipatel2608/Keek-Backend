@@ -406,18 +406,16 @@ exports.youtubeData = async (req, res) => {
   }
 };
 
-const querystring = require('querystring');
-const client_id = process.env.INSTA_APP_ID;
-const client_secret = process.env.INSTA_APP_SECRET;
-const redirect_uri = process.env.REDIRECT_URI;
-const encodeRedirectUrl = querystring.escape(redirect_uri)
+
+// const encodeRedirectUrl = querystring.escape(redirect_uri)
 
 exports.instaLogin = async (req, res) => {
   try {
-    const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${encodeRedirectUrl}&scope=user_profile,user_media&response_type=code`;
+    const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
     // res.redirect(authURL);
     return response(res, true, 200, 'Success', authURL)
   } catch (error) {
+    console.log(error, ' -- error 418 ----');
     return response(res, false, 500, 'Something Went Wrong!')
   }
 };
@@ -425,30 +423,42 @@ exports.instaLogin = async (req, res) => {
 // C:\Program Files (x86)\Microsoft\Edge\Application
 
 exports.instaAuth = async (req, res) => {
+  const querystring = require('querystring')
+  console.log(process.env.REDIRECT_URI, ' --- REDIRECT_URI log 27 ----');
   try {
     const { code } = req.query;
+    console.log(code, ' ---- code 66 ----');
     const tokenURL = "https://api.instagram.com/oauth/access_token";
-
-    request.post(
-      tokenURL,
-      {
-        form: {
-          client_id,
-          client_secret,
-          grant_type: "authorization_code",
-          redirect_uri,
-          code,
-        },
-      },
-      (error, response, body) => {
-        if (error) {
-          return res.send("Error fetching access token");
+   const redirect_uri = process.env.REDIRECT_URI;
+  //  const redirect_uri = req.query.redirect_uri;
+    const client_id = process.env.INSTA_APP_ID;
+    const client_secret = process.env.INSTA_APP_SECRET;
+      const axios = require('axios');
+      // const redirect_uri = querystring.escape(redirectUri)
+      
+      axios.post(tokenURL, {
+        client_id,
+        client_secret,
+        grant_type: "authorization_code",
+        redirect_uri: process.env.REDIRECT_URI,
+        code: req.query.code,
+      }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
-        const data = JSON.parse(body);
+      })
+      .then(response => {
+        // const body = response.data;
+        const data = JSON.parse(response.data)
         res.send(`Access Token: ${data.access_token}`);
-      }
-    );
+        // Handle the response body
+      })
+      .catch(error => {
+        console.log(error, ' --- error 109 ----');
+        // Handle the error
+        return res.send("Error fetching access token");
+      });
   } catch (error) {
-    return response(res, false, 500, 'Something Went Wrong!')
+    return res.send(res, false, 500, 'Something Went Wrong!')
   }
 };
