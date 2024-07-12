@@ -8,8 +8,8 @@ module.exports = (app, router) => {
     router.get("/get-user/:username", userController.fetchUserData);
     router.get("/get-user", userController.youtubeData);
     router.get("/login", userController.instaLogin);
-    router.get("/auth", userController.instaAuth);
+    router.get("/authoauth2callbackAPI", userController.instaAuth);
   
-    app.use("/api", router);
+    app.use(router);
   };
   
