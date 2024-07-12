@@ -30,7 +30,7 @@ app.get('/oauth2callback', async (req, res) => {
     const { code } = req.query;
     console.log(code, ' ---- code 66 ----');
     const tokenURL = "https://api.instagram.com/oauth/access_token";
-   const redirectUri = 'https://817d-117-253-237-61.ngrok-free.app/oauth2callback';
+   const redirectUri = process.env.REDIRECT_URI;
   //  const redirect_uri = req.query.redirect_uri;
     const client_id = process.env.INSTA_APP_ID;
     const client_secret = process.env.INSTA_APP_SECRET;
