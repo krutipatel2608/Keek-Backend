@@ -409,7 +409,7 @@ exports.youtubeData = async (req, res) => {
 const querystring = require('querystring');
 const client_id = process.env.INSTA_APP_ID;
 const client_secret = process.env.INSTA_APP_SECRET;
-const redirect_uri = "https://817d-117-253-237-61.ngrok-free.app/oauth2callback";
+const redirect_uri = process.env.REDIRECT_URI;
 const encodeRedirectUrl = querystring.escape(redirect_uri)
 
 exports.instaLogin = async (req, res) => {
