@@ -41,7 +41,7 @@ app.get('/authoauth2callbackAPI', async(req, res) => {
         client_id: process.env.INSTA_APP_ID,
         client_secret: process.env.INSTA_APP_SECRET,
         grant_type: "authorization_code",
-        redirect_uri: process.env.REDIRECT_URI,
+        redirect_uri: 'https://keek-backend-8l7vqp6nh-krutika-patels-projects.vercel.app/oauth2callbackAPI',
         code: req.query.code,
       }, {
         headers: {
