@@ -25,12 +25,12 @@ app.get('/',(req, res) => {
   return res.send('Welcome to keek project')
 })
 
-const dirPath = 'C:\\';
-const options = {
-  key: fs.readFileSync(`${dirPath}OpenSSL-Win64/myprivatekey.key`),
-  cert: fs.readFileSync(`${dirPath}OpenSSL-Win64/mycertificate.crt`)
-};
+// const dirPath = 'C:\\';
 
+const options = {
+  key: fs.readFileSync(path.join(__dirname,'/src/files/server.key')),
+  cert: fs.readFileSync(path.join(__dirname,'/src/files/server.cert'))
+};
 https.createServer(options, app).listen(port, () => {
   console.log(`Server is running on https://localhost:${port}`);
 });
