@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 const sendGridMail = require("@sendgrid/mail");
-const twilio = require("twilio");
+// const twilio = require("twilio");
 const fs = require("fs");
-const client = new twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+// const client = new twilio(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_TOKEN
+// );
 
 const userModel = require("../models/user");
 const { default: axios } = require("axios");
@@ -173,36 +173,36 @@ const generateNumber = (length) => {
   return result;
 };
 
-exports.sendOTP = async (req, res) => {
-  try {
-    // console.log(req.body, '--- body ----');
-    const sendOtp = client.messages.create({
-      body: `Your OTP for Keek is ${generateNumber(4)}`,
-      to: `+91${req.body.mobile}`, // Text this number
-      from: process.env.TWILIO_PHONE_NUMBER, // From a valid Twilio number
-    });
-    if (sendOtp) {
-      return res.send({
-        status: true,
-        statuscode: 201,
-        message: "OTP sent successfully",
-      });
-    } else {
-      return res.send({
-        status: false,
-        statuscode: 422,
-        message: "Something went wrong!",
-      });
-    }
-  } catch (error) {
-    console.log(error, "---- error 194 ---");
-    return res.send({
-      status: false,
-      statuscode: 500,
-      message: "Something went wrong!",
-    });
-  }
-};
+// exports.sendOTP = async (req, res) => {
+//   try {
+//     // console.log(req.body, '--- body ----');
+//     const sendOtp = client.messages.create({
+//       body: `Your OTP for Keek is ${generateNumber(4)}`,
+//       to: `+91${req.body.mobile}`, // Text this number
+//       from: process.env.TWILIO_PHONE_NUMBER, // From a valid Twilio number
+//     });
+//     if (sendOtp) {
+//       return res.send({
+//         status: true,
+//         statuscode: 201,
+//         message: "OTP sent successfully",
+//       });
+//     } else {
+//       return res.send({
+//         status: false,
+//         statuscode: 422,
+//         message: "Something went wrong!",
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error, "---- error 194 ---");
+//     return res.send({
+//       status: false,
+//       statuscode: 500,
+//       message: "Something went wrong!",
+//     });
+//   }
+// };
 
 exports.createUser = async (req, res) => {
   try {
