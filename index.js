@@ -29,7 +29,7 @@ app.get('/',(req, res) => {
 const response = require('./src/constants/response')
 app.get('/oauth/authorize', async (req, res) => {
   try {
-    const querystring = require('querystring');
+    // const querystring = require('querystring');
   //  const redirectURI = querystring.escape(process.env.REDIRECT_URI)
     const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
     // res.redirect(authURL);
@@ -82,7 +82,7 @@ app.get('/oauth/authorize', async (req, res) => {
 // const dirPath = 'C:\\';
 
 
-
+https://keek-backend.onrender.com/instaCallback?code=AQDfdVCg04gUG963zdY_vtvI6aHVYve4ekLZEwAia6PA_WnPtt7r6UCc4-8dWve5oNZPEhSCXFrQ71J0hCsQcgVBlrZQDFADOqiVm7nuvOfLInj11u466-gXlptJsT31Zpq_yuFtGg9xuDD8KUVOd5aJ3JunWahyImNUEEOQp2LaznCZSRSKFmuJg-L_norA8-__xRq0R44q50d6J06DJUBdCvsNHbrN3GnGZm5zzoAcbg#_
 app.get('/instaCallback',async (req, res) => {
   const { code } = req.query;
 
@@ -98,6 +98,7 @@ app.get('/instaCallback',async (req, res) => {
   formData.append("grant_type", grant_type);
   formData.append("redirect_uri", redirect_uri);
   formData.append("code", code);
+  console.log(formData, ' ------- formData 101 -----');
   let shortLivedToken;
   let token;
     const response = await axios.post(tokenUrl, formData, {
@@ -106,6 +107,7 @@ app.get('/instaCallback',async (req, res) => {
       },
     });
     shortLivedToken = response.data.access_token;
+    console.log(shortLivedToken, ' ----- shortLivedToken 109 ------');
   if (shortLivedToken) {
 
       const client_secret = process.env.INSTA_APP_SECRET;
@@ -128,6 +130,7 @@ app.get('/instaCallback',async (req, res) => {
     data: userData
   })
 });
+
 
 
 const options = {
