@@ -43,6 +43,7 @@ app.get('/oauth/authorize', async (req, res) => {
 app.get('/instaCallback', async(req, res) => {
   try {
     const { code } = req.query;
+    console.log(process.env.REDIRECT_URI);
     console.log(req.query, ' ---- code 66 ----');
     const tokenURL = "https://api.instagram.com/oauth/access_token";
     const client_id = process.env.INSTA_APP_ID;
