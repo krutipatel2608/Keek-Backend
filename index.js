@@ -57,7 +57,7 @@ app.get('/instaCallback', async(req, res) => {
         client_id: process.env.INSTA_APP_ID,
         client_secret: process.env.INSTA_APP_SECRET,
         grant_type: "authorization_code",
-        redirect_uri: 'https://localhost:2020/instaCallback',
+        redirect_uri: process.env.REDIRECT_URI,
         code: req.query.code,
       }, {
         headers: {
