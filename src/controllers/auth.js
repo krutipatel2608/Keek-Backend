@@ -411,7 +411,9 @@ exports.youtubeData = async (req, res) => {
 
 exports.instaLogin = async (req, res) => {
   try {
-    const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
+    const querystring = require('querystring');
+   const redirectURI = querystring.escape(process.env.REDIRECT_URI)
+    const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${redirectURI}&scope=user_profile,user_media&response_type=code`;
     // res.redirect(authURL);
     return response(res, true, 200, 'Success', authURL)
   } catch (error) {

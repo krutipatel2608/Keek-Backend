@@ -5,8 +5,9 @@ const fs = require('fs')
 const path = require('path')
 const Router = express.Router()
 const https = require('https');
+const axios = require('axios');
 
-const port = process.env.PORT || 2020
+const port = 2020
 require('dotenv').config()
 require('./src/db-config/connection')
 
@@ -25,43 +26,55 @@ app.get('/',(req, res) => {
   return res.send('Welcome to keek project')
 })
 
-app.get('/authoauth2callbackAPI', async(req, res) => {
+const response = require('./src/constants/response')
+app.get('/oauth/authorize', async (req, res) => {
+  try {
+    const querystring = require('querystring');
+   const redirectURI = querystring.escape(process.env.REDIRECT_URI)
+    const authURL = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTA_APP_ID}&redirect_uri=${redirectURI}&scope=user_profile,user_media&response_type=code`;
+    // res.redirect(authURL);
+    return response(res, true, 200, 'Success', authURL)
+  } catch (error) {
+    console.log(error, ' -- error 418 ----');
+    return response(res, false, 500, 'Something Went Wrong!')
+  }
+});
+
+app.get('/instaCallback', async(req, res) => {
   try {
     const { code } = req.query;
-    console.log(code, ' ---- code 66 ----');
+    console.log(req.query, ' ---- code 66 ----');
     const tokenURL = "https://api.instagram.com/oauth/access_token";
-   const redirect_uri = process.env.REDIRECT_URI;
-  //  const redirect_uri = req.query.redirect_uri;
     const client_id = process.env.INSTA_APP_ID;
     const client_secret = process.env.INSTA_APP_SECRET;
-      const axios = require('axios');
-      // const redirect_uri = querystring.escape(redirectUri)
+     
+      const querystring = require('querystring')
+      // const redirectUri = querystring.escape(process.env.REDIRECT_URI)
+      const redirectUri = 'https://localhost:2020/instaCallback'
       
+
       axios.post(tokenURL, {
-        'client_id': process.env.INSTA_APP_ID,
-        'client_secret': process.env.INSTA_APP_SECRET,
-        'grant_type': "authorization_code",
-        'redirect_uri': process.env.REDIRECT_URI,
-        'code': req.query.code,
+        client_id: process.env.INSTA_APP_ID,
+        client_secret: process.env.INSTA_APP_SECRET,
+        grant_type: "authorization_code",
+        redirect_uri: 'https://localhost:2020/instaCallback',
+        code: req.query.code,
       }, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
-      .then(response => {
-        // const body = response.data;
-        console.log(response, ' ----- response 53 ----');
-        const data = JSON.parse(response.data)
-        res.send(`Access Token: ${data.access_token}`);
-        // Handle the response body
+      .then(resData => {
+        return `Access Token: ${resData.data.access_token}`;
       })
       .catch(error => {
-        console.log(error, ' --- error 109 ----');
-        // Handle the error
-        return res.send("Error fetching access token");
-      });
+        console.log(error, '-- error 109 ----');
+        return "Error fetching access token";
+      })
+
   } catch (error) {
-    return res.send(res, false, 500, 'Something Went Wrong!')
+    console.log(error, ' ---- error 84 ---');
+    return res.status(500).send('Something Went Wrong!');
   }
 })
 
@@ -75,4 +88,4 @@ https.createServer(options, app).listen(port, () => {
   console.log(`Server is running on https://localhost:${port}`);
 });
 
-module.exports = app
+// module.exports = app
