@@ -4,8 +4,8 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
 const Router = express.Router()
-const https = require('https');
-const axios = require('axios');
+// const https = require('https');
+// const axios = require('axios');
 
 const port = 2020
 require('dotenv').config()
@@ -84,8 +84,12 @@ const options = {
   key: fs.readFileSync(path.join(__dirname,'/src/files/server.key')),
   cert: fs.readFileSync(path.join(__dirname,'/src/files/server.cert'))
 };
-https.createServer(options, app).listen(port, () => {
-  console.log(`Server is running on https://localhost:${port}`);
-});
+// http.createServer(options, app).listen(port, () => {
+//   console.log(`Server is running on https://localhost:${port}`);
+// });
+
+app.listen( port,'localhost', () => {
+  console.log(`Server is running on http://localhost:${port}`);
+})
 
 // module.exports = app

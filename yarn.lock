@@ -3526,6 +3526,11 @@
     "quick-lru" "^5.1.1"
     "resolve-alpn" "^1.0.0"
 
+"http2@^3.3.7":
+  "integrity" "sha512-puSi8M8WNlFJm9Pk4c/Mbz9Gwparuj3gO9/RRO5zv6piQ0FY+9Qywp0PdWshYgsMJSalixFY7eC6oPu0zRxLAQ=="
+  "resolved" "https://registry.npmjs.org/http2/-/http2-3.3.7.tgz"
+  "version" "3.3.7"
+
 "https-proxy-agent@^5.0.0":
   "integrity" "sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA=="
   "resolved" "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz"
