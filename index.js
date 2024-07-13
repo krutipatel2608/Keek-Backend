@@ -27,29 +27,10 @@ app.get('/',(req, res) => {
 
 // const dirPath = 'C:\\';
 
-// const options = {
-//   key: fs.readFileSync(path.join(__dirname,'/src/files/server.key')),
-//   cert: fs.readFileSync(path.join(__dirname,'/src/files/server.cert'))
-// };
-// https.createServer(options, app).listen(port, () => {
-//   console.log(`Server is running on https://localhost:${port}`);
-// });
-
-module.exports.handler = async (event, context) => {
-  const options = {
-      key: fs.readFileSync(path.join(__dirname, '/src/files/server.key')),
-      cert: fs.readFileSync(path.join(__dirname, '/src/files/server.cert'))
-  };
-
-  return new Promise((resolve, reject) => {
-      https.createServer(options, app).listen(port, (err) => {
-          if (err) {
-              console.error('Error starting HTTPS server:', err);
-              reject(err);
-          } else {
-              console.log(`Server is running on https://localhost:${port}`);
-              resolve();
-          }
-      });
-  });
+const options = {
+  key: fs.readFileSync(path.join(__dirname,'/src/files/server.key')),
+  cert: fs.readFileSync(path.join(__dirname,'/src/files/server.cert'))
 };
+https.createServer(options, app).listen(port, () => {
+  console.log(`Server is running on https://localhost:${port}`);
+});
