@@ -38,11 +38,11 @@ app.get('/authoauth2callbackAPI', async(req, res) => {
       // const redirect_uri = querystring.escape(redirectUri)
       
       axios.post(tokenURL, {
-        client_id: process.env.INSTA_APP_ID,
-        client_secret: process.env.INSTA_APP_SECRET,
-        grant_type: "authorization_code",
-        redirect_uri: 'https://keek-backend.vercel.app/authoauth2callbackAPI',
-        code: req.query.code,
+        'client_id': process.env.INSTA_APP_ID,
+        'client_secret': process.env.INSTA_APP_SECRET,
+        'grant_type': "authorization_code",
+        'redirect_uri': process.env.REDIRECT_URI,
+        'code': req.query.code,
       }, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -50,6 +50,7 @@ app.get('/authoauth2callbackAPI', async(req, res) => {
       })
       .then(response => {
         // const body = response.data;
+        console.log(response, ' ----- response 53 ----');
         const data = JSON.parse(response.data)
         res.send(`Access Token: ${data.access_token}`);
         // Handle the response body
