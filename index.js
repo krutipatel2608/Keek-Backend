@@ -25,6 +25,43 @@ app.get('/',(req, res) => {
   return res.send('Welcome to keek project')
 })
 
+app.get('/fbPost/:postId', async(req, res) => {
+  const url = `https://graph.facebook.com/v12.0/${req.params.postId}/insights/post_impressions_unique?fields=value&access_token=${process.env.ACCESS_TOKEN}`;
+  
+  console.log(url, '-- url 136 ---');
+try {
+  const response = await axios.get(url);
+  console.log(response, '--- response 139 ----');
+  const insights = response.data.data;
+
+  let views = 0;
+  insights.forEach((insight) => {
+    views += insight.values[0].value;
+  });
+  console.log(views, '--- views 145 ----');
+
+  console.log(`Views: ${views}`);
+
+  // Fetch likes
+  const reactionsUrl = `https://graph.facebook.com/v12.0/${req.params.postId}/reactions?summary=true&access_token=${process.env.ACCESS_TOKEN}`;
+  const likesResponse = await axios.get(reactionsUrl);
+  const likes = likesResponse.data.summary.total_count;
+
+  console.log(`Likes: ${likes}`);
+} catch (error) {
+  console.error('Error fetching data:', error.response? error.response.data : error.message);
+}
+})
+
+const extractPostIdFromUrl = (url) => {
+  const urlParts = url.split('/');
+  return urlParts[urlParts.length - 1];
+};
+
+const postUrl = 'https://www.facebook.com/nparksbuzz/posts/881358010698524';
+const postId = extractPostIdFromUrl(postUrl);
+console.log(postId, ' ----- post id ----'); // This will print the extracted post ID
+
 const dirPath = 'C:\\';
 const options = {
   key: fs.readFileSync(`${dirPath}OpenSSL-Win64/myprivatekey.key`),
