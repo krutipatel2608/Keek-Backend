@@ -127,7 +127,7 @@ app.get('/instaCallback',async (req, res) => {
     status:"Success",
     status_code:200,
     message:"token saved successfully",
-    data: userData
+    data: token
   })
 });
 
