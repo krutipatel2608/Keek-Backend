@@ -40,8 +40,9 @@ app.get('/oauth2callback', async (req, res) => {
       })
       .then(response => {
         // const body = response.data;
+       console.log("LOG START",response.data,"LOG END")
         const data = JSON.parse(response.data)
-        res.send(`Access Token: ${data.access_token}`);
+        res.send({data:data.access_token});
         // Handle the response body
       })
       .catch(error => {
